@@ -6,7 +6,13 @@
 class Parser : public Loggable
 {
 public:
+  // Ctor
+  Parser()
+    : Loggable(new Logger())
+  {}
+
   std::vector<std::string> parse(const std::string& text) const;
+  void dumpLogs() const;
 };
 
 #endif

@@ -6,7 +6,7 @@ class Loggable
 {
 public:
   Loggable() = default;
-  Loggable(Logger* logger): logger_(logger) {}
+  Loggable(Logger* logger) : logger_(logger) {}
 
   const Logger& logger() const { return *logger_; }
 private:
@@ -17,8 +17,16 @@ private:
   do {                                    \
     try {                                 \
         (logger).log((msg));              \
-    } catch (const std::exception& e) {   \
+    } catch (...) {                       \
     }                                     \
   } while (0)
 
 #define LOG(msg) LOG_TO((logger()), msg)
+
+#define DUMP(logger)  \
+  try {               \
+    (logger).dump();  \
+  } catch( ...) {     \
+  }                   
+
+#define DUMP_LOGS() DUMP(logger())

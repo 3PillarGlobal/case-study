@@ -4,23 +4,28 @@
 #include "parser.h"
 
 
-TEST_CASE( "Parser for empty string", "[dummy]" ) {
+TEST_CASE("Parser for empty string", "[dummy]") {
   Parser parser;
 
   auto result = parser.parse(std::string());
+  REQUIRE(result.empty());
 
-    REQUIRE( result.empty() );
+  parser.dumpLogs();
 }
 
-TEST_CASE( "splitting", "[dummy]" ) {
+TEST_CASE("splitting", "[dummy]") {
   Parser parser;
 
   auto result = parser.parse("fjpwei iewhow oqeigrwo owio");
-  REQUIRE( result.size() == 4);
+  REQUIRE(result.size() == 4);
+  result = parser.parse("    fjpwei iewhow oqeigrwo owio");
+  REQUIRE(result.size() == 4);
   result = parser.parse(R"(fjpwei  iewhow  oqeigrwo  owio)");
-  REQUIRE( result.size() == 4);
+  REQUIRE(result.size() == 4);
   result = parser.parse("fjpweiiewhowoqeigrwoowio)");
-  REQUIRE( result.size() == 1);
+  REQUIRE(result.size() == 1);
   result = parser.parse("\t\n\f\r\v ");
-  REQUIRE( result.size() == 0);
+  REQUIRE(result.size() == 0);
+
+  parser.dumpLogs();
 }
