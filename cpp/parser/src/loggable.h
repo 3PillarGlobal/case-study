@@ -6,8 +6,7 @@
 class Loggable
 {
 public:
-  Loggable() = default;
-  Loggable(Logger* logger): logger_(logger) {}
+  Loggable(): logger_(new Logger) {}
 
   const Logger& logger() const { return *logger_; }
 private:
