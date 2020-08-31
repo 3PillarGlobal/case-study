@@ -8,17 +8,10 @@ class Loggable
 public:
   Loggable(): logger_(new Logger) {}
 
-  const Logger& logger() const { return *logger_; }
+  inline void log(const std::string& message) const {
+      logger_->log(message);
+  }
+
 private:
   std::unique_ptr<Logger> logger_;
 };
-
-#define LOG_TO(logger, msg)               \
-  do {                                    \
-    try {                                 \
-        (logger).log((msg));              \
-    } catch (const std::exception& e) {   \
-    }                                     \
-  } while (0)
-
-#define LOG(msg) LOG_TO((logger()), msg)
