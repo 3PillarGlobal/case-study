@@ -17,7 +17,7 @@ std::vector<std::string> Parser::parse(const std::string& text) const
     }
   }
 
-  log("Parsing input text: \"" + text + "\" resulted in \'" + std::to_string(parsingResult.size()) + "\' word(s) extracted");
+  log("Parsing input text: {" + text + "} resulted in {" + std::to_string(parsingResult.size()) + "} word(s) extracted");
 
   return parsingResult;
 };

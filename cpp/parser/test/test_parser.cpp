@@ -9,7 +9,9 @@ TEST_CASE( "Parser for empty string", "[dummy]" ) {
 
   auto result = parser.parse(std::string());
 
-    REQUIRE( result.empty() );
+  REQUIRE( result.empty() );
+
+  parser.printLogs();
 }
 
 TEST_CASE( "splitting", "[dummy]" ) {
@@ -23,4 +25,6 @@ TEST_CASE( "splitting", "[dummy]" ) {
   REQUIRE( result.size() == 1);
   result = parser.parse("\t\n\f\r\v ");
   REQUIRE( result.size() == 0);
+
+  parser.printLogs();
 }

@@ -12,6 +12,9 @@ public:
       logger_->log(message);
   }
 
+  inline void printLogs() const {
+      logger_->print(std::cout);
+  }
 private:
   std::unique_ptr<Logger> logger_;
 };
