@@ -1,24 +1,33 @@
 #pragma once
 
+#include <memory>
 #include "logger.h"
 
 class Loggable
 {
 public:
-  Loggable() = default;
-  Loggable(Logger* logger): logger_(logger) {}
 
-  const Logger& logger() const { return *logger_; }
+  explicit Loggable(const std::shared_ptr<Logger>& logger = nullptr): logger_(logger) {}
+
+  const Logger& logger() const
+  {
+    if (auto tempLogger = logger_.lock()) {
+      return *tempLogger;
+    }
+  }
+
+  template<typename... Type>
+  void log(Type&&... args) const;
+
 private:
-  std::unique_ptr<Logger> logger_;
+  std::weak_ptr<Logger> logger_;
 };
 
-#define LOG_TO(logger, msg)               \
-  do {                                    \
-    try {                                 \
-        (logger).log((msg));              \
-    } catch (const std::exception& e) {   \
-    }                                     \
-  } while (0)
+template<typename... Type>
+void Loggable::log(Type&&... args) const
+{
+  if(auto tempLogger = logger_.lock()) {
+    tempLogger->log<Type...>(std::forward<Type>(args)...);
+  }
+}
 
-#define LOG(msg) LOG_TO((logger()), msg)

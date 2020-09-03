@@ -1,6 +1,22 @@
 #include "logger.h"
 
-void Logger::log(const std::string& message) const
+#include <iostream>
+
+void ConsoleLogger::write() const
 {
-  logs_.push_back(message);
-};
+  while(!logs_.empty()) {
+    std::cout << logs_.front() << "\n";
+    logs_.pop_front();
+  }
+  flush();
+}
+
+void ConsoleLogger::flush() const
+{
+  std::cout.flush();
+}
+
+ConsoleLogger::~ConsoleLogger()
+{
+  flush();
+}

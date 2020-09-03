@@ -1,15 +1,40 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <list>
+#include <sstream>
+#include <algorithm>
 
 class Logger {
 public:
-  Logger(){ logs_.reserve(10); }
+  Logger() = default;
+  Logger(const Logger& other) = delete;
+  void operator=(const Logger& other) = delete;
 
-  void log(const std::string& message) const;
-private:
-  Logger(const Logger& other);
+  template<typename... Type>
+  void log(Type&&... args) const;
 
-  mutable std::vector<std::string> logs_;
+protected:
+  virtual void write() const = 0;
+  virtual void flush() const = 0;
+  mutable std::list<std::string> logs_;
+};
+
+template<typename... Type>
+void Logger::log(Type&&... args) const
+{
+  std::ostringstream messageStream;
+  const auto dummy = {(messageStream << args << " ", 0)...};
+  (void)dummy;
+
+  logs_.emplace_back(messageStream.str());
+  write();
+}
+
+class ConsoleLogger: public Logger {
+  void write() const override;
+  void flush() const override;
+
+public:
+  ~ConsoleLogger();
 };
