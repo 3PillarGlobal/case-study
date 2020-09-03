@@ -1,6 +1,9 @@
-#include <cctype>
-#include <iostream>
+#include <vector>
 #include "parser.h"
+
+Parser::Parser(const std::shared_ptr<Logger> &logger) : Loggable(logger)
+{
+}
 
 std::vector<std::string> Parser::parse(const std::string& text) const
 {
@@ -17,5 +20,7 @@ std::vector<std::string> Parser::parse(const std::string& text) const
     }
   }
 
+  log("parsed", parsingResult.size(), "words in [", text,"]");
+
   return parsingResult;
-};
+}

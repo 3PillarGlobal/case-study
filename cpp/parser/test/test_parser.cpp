@@ -13,7 +13,8 @@ TEST_CASE( "Parser for empty string", "[dummy]" ) {
 }
 
 TEST_CASE( "splitting", "[dummy]" ) {
-  Parser parser;
+  std::shared_ptr<Logger> logger(new ConsoleLogger);
+  Parser parser(logger);
 
   auto result = parser.parse("fjpwei iewhow oqeigrwo owio");
   REQUIRE( result.size() == 4);
