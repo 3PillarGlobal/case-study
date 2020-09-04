@@ -5,17 +5,18 @@
 std::vector<std::string> Parser::parse(const std::string& text) const
 {
   std::vector<std::string> parsingResult;
-  std::string word;
-  for(int i=0; i < text.size(); i++) {
-    while(!std::isspace(text[i])){
-      word.push_back(text[i]);
-      i++;
-    }
-    if(!word.empty()) {
-      parsingResult.push_back(word);
-      word.clear();
-    }
+  auto lam = [](unsigned char c) {return std::isspace(c);};
+  auto it = find_if(text.begin(), text.end(), lam);
+  auto curr = text.begin();
+  auto addParseResult = [&]() {if (std::distance(curr, it) > 1)
+                                 parsingResult.emplace_back(curr, it);};
+  while (it!= text.end()) {
+    curr= it;
+    it = find_if(std::next(it), text.end(), lam);
+    addParseResult();
   }
+  addParseResult();
+  LOG_TO(logger, "Parsed " + std::to_string(parsingResult.size()) + " words.");
 
   return parsingResult;
 };
